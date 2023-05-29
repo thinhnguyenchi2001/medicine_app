@@ -11,6 +11,7 @@ const HeaderScreen = ({ navigation }) => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setLoading(true);
     setTimeout(() => {
       authUser();
     }, 2000);
@@ -22,7 +23,6 @@ const HeaderScreen = ({ navigation }) => {
   };
 
   const getUser = async () => {
-    setLoading(true);
     let userData = await AsyncStorage.getItem("userData");
 
     userData && axios

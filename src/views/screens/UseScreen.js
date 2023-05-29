@@ -40,6 +40,7 @@ const UserScreen = ({ navigation, route }) => {
     return (
       <View>
         <Text
+          style={{ textAlign: "center" }}
           onPress={() =>
             Alert.alert("Thông báo", "Bạn có muốn hủy đơn hàng?", [
               { text: "Ok", onPress: () => deleteOrder(Id) },
@@ -57,7 +58,9 @@ const UserScreen = ({ navigation, route }) => {
     return (
       <View>
         <Text
+          style={{ textAlign: "center" }}
           onPress={() => {
+            setMode("detail");
             toggleModal();
             setIdOrderSelect(Id);
           }}
@@ -159,14 +162,21 @@ const UserScreen = ({ navigation, route }) => {
             }}
           >
             <Text
-              onPress={() => {toggleModal()
-              setMode("editUser")}}
+              onPress={() => {
+                setMode("editUser");
+                toggleModal();
+              }}
               style={{ color: COLORS2.primary, fontSize: 18, marginRight: 30 }}
             >
               <Feather name="edit" size={24} color="black" />
             </Text>
-            <Text onPress={() => {toggleModal()
-              setMode("editPass")}} style={{ fontSize: 18, marginLeft: 30 }}>
+            <Text
+              onPress={() => {
+                setMode("editPass");
+                toggleModal();
+              }}
+              style={{ fontSize: 18, marginLeft: 30 }}
+            >
               <AntDesign name="lock1" size={24} color="black" />
             </Text>
           </View>
@@ -197,100 +207,133 @@ const UserScreen = ({ navigation, route }) => {
         </View>
 
         {isModalVisible && (
-          <Modal isVisible={isModalVisible}>
-            {mode === "detail" && (
-              <View style={{ borderRadius: 20, overflow: "hidden" }}>
-                <Text
-                  style={{
-                    backgroundColor: COLORS2.primary,
-                    color: "white",
-                    height: 40,
-                    fontSize: 18,
-                    textAlign: "center",
-                    paddingTop: 6,
-                  }}
-                >
-                  Danh sách sản phẩm của đơn hàng
-                </Text>
-                <Table borderStyle={{ borderWidth: 1, borderColor: "#c8e1ff" }}>
-                  <Row
-                    data={["STT", "Tên sản phẩm", "Ảnh", "Số lượng", ""]}
+          <Modal
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            isVisible={isModalVisible}
+          >
+            <ScrollView>
+              {mode === "detail" && (
+                <View style={{ borderRadius: 20, overflow: "hidden" }}>
+                  <Text
                     style={{
-                      fontWeight: "bold",
-                      fontSize: 12,
-                      backgroundColor: "white",
+                      backgroundColor: COLORS2.primary,
+                      color: "white",
+                      height: 40,
+                      fontSize: 18,
+                      textAlign: "center",
+                      paddingTop: 6,
                     }}
+                  >
+                    Danh sách sản phẩm của đơn hàng
+                  </Text>
+                  <Table
+                    borderStyle={{ borderWidth: 1, borderColor: "#c8e1ff" }}
+                  >
+                    <Row
+                      widthArr={[40, 150, 90, 40, 50]}
+                      textStyle={{ textAlign: "center" }}
+                      data={["STT", "Tên sản phẩm", "Ảnh", "Số lượng", ""]}
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 12,
+                        backgroundColor: "white",
+                      }}
+                    />
+                    <Rows
+                      widthArr={[40, 150, 90, 40, 50]}
+                      textStyle={{ textAlign: "center" }}
+                      style={{ backgroundColor: "white" }}
+                      data={listOrderUser
+                        .find((e) => e.Id == idOrderSelect)
+                        .OrderDetail.map((e, index) => [
+                          index + 1,
+                          <Text style={{marginLeft: 10, marginRight:5}} numberOfLines={5}>{e?.ProductInfo?.Name}</Text>,
+                          <View style={{ marginLeft: 10 }}>
+                            <Image
+                              source={{
+                                uri: `http://10.0.2.2:8000${e?.ProductInfo?.ImageAvatarUrl}`,
+                              }}
+                              style={{ height: 70, width: 70 }}
+                            />
+                          </View>,
+                          e?.BuyQuantity,
+                          <Text
+                            style={{ textAlign: "center" }}
+                            onPress={() =>
+                              navigation.navigate(
+                                "DetailsScreen",
+                                e.ProductInfo
+                              )
+                            }
+                          >
+                            xem
+                          </Text>,
+                        ])}
+                    />
+                  </Table>
+                  <Button
+                    style={{ backgroundColor: COLORS2.primary }}
+                    title="Đóng danh sách sản phẩm"
+                    onPress={toggleModal}
                   />
-                  <Rows
-                    style={{ backgroundColor: "white" }}
-                    data={listOrderUser
-                      .find((e) => e.Id == idOrderSelect)
-                      .OrderDetail.map((e, index) => [
-                        index + 1,
-                        e?.ProductInfo?.Name,
-                        <Image
-                          source={{
-                            uri: `http://10.0.2.2:8000${e?.ProductInfo?.ImageAvatarUrl}`,
-                          }}
-                          style={{ height: 70, width: 70 }}
-                        />,
-                        e?.BuyQuantity,
-                        <Text
-                          onPress={() =>
-                            navigation.navigate("DetailsScreen", e.ProductInfo)
-                          }
-                        >
-                          xem
-                        </Text>,
-                      ])}
-                  />
-                </Table>
-                <Button
-                  style={{ backgroundColor: COLORS2.primary }}
-                  title="Đóng danh sách sản phẩm"
-                  onPress={toggleModal}
+                </View>
+              )}
+              {mode === "editUser" && (
+                <EditUser
+                  navigation={navigation}
+                  toggleModal={toggleModal}
+                  setName={setName}
                 />
-              </View>
-            )}
-            {mode === "editUser" && (
-              <EditUser
-                navigation={navigation}
-                toggleModal={toggleModal}
-                setName={setName}
-              />
-            )}
-            {mode === "editPass" && (
-              <EditPass
-                navigation={navigation}
-                toggleModal={toggleModal}
-                setName={setName}
-              />
-            )}
+              )}
+              {mode === "editPass" && (
+                <EditPass
+                  navigation={navigation}
+                  toggleModal={toggleModal}
+                  setName={setName}
+                />
+              )}
+            </ScrollView>
           </Modal>
         )}
 
         <View style={styles.container}>
-          <Table borderStyle={{ borderWidth: 1, borderColor: "#c8e1ff" }}>
-            <Row
-              data={["STT", "Thời gian", "Tổng tiền", "Trạng thái", "", ""]}
-              style={{
-                fontWeight: "bold",
-                fontSize: 12,
-                backgroundColor: "white",
-              }}
-            />
-            <Rows
-              style={{ backgroundColor: "white" }}
-              data={listOrderUser.map((e, index) => [
-                index + 1,
-                e.TimeOrder,
-                e.TotalMoney,
-                renderOrderStatus(e.Status),
-                ShowOrder(e.Id),
-                DeleteOrder(e.Id),
-              ])}
-            />
-          </Table>
+          <ScrollView horizontal={true}>
+            <Table borderStyle={{ borderWidth: 1, borderColor: "#c8e1ff" }}>
+              <Row
+                widthArr={[40, 100, 120, 120, 40, 40]}
+                textStyle={{ textAlign: "center", padding: 1 }}
+                data={["STT", "Thời gian", "Tổng tiền", "Trạng thái", "", ""]}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 12,
+                  backgroundColor: "white",
+                }}
+              />
+              <Rows
+                widthArr={[40, 100, 120, 120, 40, 40]}
+                textStyle={{ paddingLeft: 10 }}
+                style={{ backgroundColor: "white" }}
+                data={listOrderUser.map((e, index) => [
+                  index + 1,
+                  e.TimeOrder,
+                  <Text style={{ padding: 2, textAlign: "center" }}>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(e.TotalMoney)}
+                  </Text>,
+                  renderOrderStatus(e.Status),
+                  ShowOrder(e.Id),
+                  DeleteOrder(e.Id),
+                ])}
+              />
+            </Table>
+          </ScrollView>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -342,6 +385,15 @@ const style = StyleSheet.create({
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, paddingTop: 10, borderRadius: 30 },
   head: { height: 40, backgroundColor: "#f1f8ff" },
+});
+
+const styleTable = StyleSheet.create({
+  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: "#fff" },
+  head: { height: 40, backgroundColor: "#f1f8ff" },
+  wrapper: { flexDirection: "row" },
+  title: { flex: 1, backgroundColor: "#f6f8fa" },
+  row: { height: 28 },
+  text: { textAlign: "center" },
 });
 
 export default UserScreen;

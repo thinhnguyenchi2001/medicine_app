@@ -14,15 +14,18 @@ import { COLORS2 } from "../../conts/colors";
 import { SecondaryButton } from "../components/Button2";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 const DetailsScreen = ({ navigation, route }) => {
   const item = route.params;
   const [number, setNumber] = React.useState(1);
   const [auth, setAuth] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     setTimeout(() => {
       authUser();
+      setLoading(false)
     }, 2000);
   }, []);
 
@@ -40,7 +43,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
   const updateCart = async () => {
     let userData = await AsyncStorage.getItem("userData");
-    if (true) {
+
       axios
         .post("http://10.0.2.2:8000/api/cart/updateCart", {
           userId: JSON.parse(userData).Id,
@@ -49,7 +52,7 @@ const DetailsScreen = ({ navigation, route }) => {
         })
         .then((response) => {
           if (response.data.IsSuccess) {
-            Alert.alert("Thông báo", "Thêm giỏ hàng thành công", [
+            Alert.alert("Thông báo", "Thêm vào giỏ hàng thành công", [
               {
                 text: "OK",
                 onPress: () => navigation.navigate("CartScreen", new Date()),
@@ -60,15 +63,12 @@ const DetailsScreen = ({ navigation, route }) => {
           }
         })
         .catch((error) => console.error(error));
-    } else {
-      Alert.alert(
-        "warning",
-        "Cảnh báo: Vui lòng đăng nhập để chọn mua sản phẩm!"
-      );
-    }
+  
   };
 
   return (
+    <>
+    <Loader visible={loading} />
     <SafeAreaView style={{ backgroundColor: COLORS2.white }}>
       <View style={style.header}>
         <MaterialIcons
@@ -174,7 +174,7 @@ const DetailsScreen = ({ navigation, route }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView></>
   );
 };
 
