@@ -19,6 +19,7 @@ import Input from "./Input";
 import Loader from "./Loader";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
+import { PrimaryButton } from "./Button2";
 
 const EditPass = ({ navigation, toggleModal, setName }) => {
   const [inputs, setInputs] = React.useState({
@@ -107,7 +108,7 @@ const EditPass = ({ navigation, toggleModal, setName }) => {
             error={errors.password}
             password
           />
-          <Button onPress={() => handleEdit()} title="Xác nhận" />
+          <PrimaryButton onPress={() => handleEdit()} title="Xác nhận" />
           <Text
             onPress={() => toggleModal()}
             style={{

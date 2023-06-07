@@ -25,7 +25,7 @@ const HeaderScreen = ({ navigation }) => {
   const getUser = async () => {
     let userData = await AsyncStorage.getItem("userData");
 
-    userData && axios
+    userData ? axios
       .get(
         `http://10.0.2.2:8000/api/user/getUser?userId=${
           JSON.parse(userData).Id
@@ -38,12 +38,12 @@ const HeaderScreen = ({ navigation }) => {
       .catch((error) => {
         console.log(error);
         setLoading(false);
-      });
+      }):  setLoading(false);
   };
 
   React.useEffect(() => {
-     auth && getUser();
-  }, [auth, ]);
+   getUser();
+  }, [auth ]);
 
   return (
     <>

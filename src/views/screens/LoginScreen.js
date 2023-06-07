@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, SafeAreaView, Keyboard, Alert, Image } from "react-native";
+import { View, Text, SafeAreaView, Keyboard, Alert, Image,ScrollView } from "react-native";
 import COLORS, { COLORS2 } from "../../conts/colors";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../components/Loader";
 import axios from "axios";
+import { PrimaryButton } from "../components/Button2";
 
 const LoginScreen = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({ email: "", password: "" });
@@ -61,7 +62,9 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
-      
+      <ScrollView
+     
+      >
       <View style={{ paddingTop: 40, paddingHorizontal: 20 }}>
       <View   onStartShouldSetResponder={() => true}
           onResponderGrant={() => navigation.navigate("BoardScreen")} style={{ flexDirection: "row",marginBottom: 30 }}>
@@ -110,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
             error={errors.password}
             password
           />
-          <Button title="Đăng nhập" onPress={validate} />
+          <PrimaryButton title="Đăng nhập" onPress={validate} />
           <Text
             onPress={() => navigation.navigate("RegistrationScreen")}
             style={{
@@ -118,12 +121,14 @@ const LoginScreen = ({ navigation }) => {
               fontWeight: "bold",
               textAlign: "center",
               fontSize: 16,
+        
             }}
           >
             Bạn đã có tài khoản? Đăng ký
           </Text>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

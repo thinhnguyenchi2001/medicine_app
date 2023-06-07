@@ -15,6 +15,7 @@ import Input from "../components/Input";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
+import { PrimaryButton } from "../components/Button2";
 
 const ShipScreen = ({ navigation, route }) => {
     const item = route.params;
@@ -270,7 +271,7 @@ const ShipScreen = ({ navigation, route }) => {
             placeholder="Nhập ghi chú"
             error={errors.note}
           />
-          <Button onPress={ validate } title="Hoàn tất đặt hàng" />
+          <PrimaryButton onPress={ validate } title="Hoàn tất đặt hàng" />
         </View>
       </ScrollView>
     </SafeAreaView>

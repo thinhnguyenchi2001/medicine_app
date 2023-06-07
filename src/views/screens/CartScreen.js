@@ -15,6 +15,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/core";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const CartScreen = ({ navigation, route }) => {
   const [listCart, setListCart] = useState([]);

@@ -19,6 +19,7 @@ import Input from "../components/Input";
 import Loader from "../components/Loader";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
+import { PrimaryButton } from "../components/Button2";
 
 const RegistrationScreen = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({
@@ -225,7 +226,7 @@ const RegistrationScreen = ({ navigation }) => {
             error={errors.rePassword}
             password
           />
-          <Button onPress={validate} title="Đăng ký" />
+          <PrimaryButton onPress={validate} title="Đăng ký" />
           <Text
             onPress={() => navigation.navigate("LoginScreen")}
             style={{

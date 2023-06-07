@@ -19,6 +19,7 @@ import Input from "./Input";
 import Loader from "./Loader";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
+import { PrimaryButton } from "./Button2";
 
 const EditUser = ({ navigation, toggleModal, setName }) => {
   const [inputs, setInputs] = React.useState({
@@ -153,7 +154,7 @@ const EditUser = ({ navigation, toggleModal, setName }) => {
             placeholder={"Nhập số điện thoại"}
             error={errors.phoneNumber}
           />
-          <Button onPress={() => handleEdit()} title="Xác nhận" />
+          <PrimaryButton onPress={() => handleEdit()} title="Xác nhận" />
           <Text
             onPress={() => toggleModal()}
             style={{
